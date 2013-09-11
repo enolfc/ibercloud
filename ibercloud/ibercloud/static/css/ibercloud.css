@@ -1,0 +1,43 @@
+
+
+
+body {
+ /*   background: #E8F1E9; */
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+.hero-unit {
+    background: url("/ibercloud_static/img/clouds.jpg") no-repeat;
+}
+
+
+.form-signin {
+    max-width: 300px;
+    margin: 0 auto 20px;
+}
+
+
+.page-header {
+}
+/*
+.navbar {
+}
+
+.navbar-inner {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+*/
+
+.brand {
+    width: 370px;
+    height: 60px;
+    background: url("/ibercloud_static/img/ibercloud.png") no-repeat;
+    text-indent: -99999px;
+    display: block;
+}
+
+.help-inline {
+    display: block;
+}

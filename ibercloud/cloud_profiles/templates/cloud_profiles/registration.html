@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% load bootstrap_toolkit %}
+
+{% block content %}
+
+
+<form action="" method="post">{% csrf_token %}
+    <h2>Registration</h2>
+    {% if user_dn %}
+    <div class="alert alert-block alert-success">
+    <!-- <button type="button" class="close" data-dismiss="alert">&times;</button> -->
+    <p><strong>You have a valid grid certificate!</strong></p>
+    <p>Using your DN (<em>{{ user_dn }}</em>) for registration. </p>
+    </div>
+    {% endif %}
+    {{ form|as_bootstrap }}
+    <div class="form-actions">
+        <button type="submit" class="btn btn-large btn-primary">Register</button>
+    </div>
+</form>
+
+{% endblock %}

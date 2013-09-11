@@ -1,0 +1,81 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>{{ profile.email }}</h2> 
+
+<table class="table">
+
+    <tr>
+        <td><strong>Name</strong></td>
+        <td>{{ profile.name }}</td>
+    <tr>
+        <td><strong>e-mail</strong></td>
+        <td>{{ profile.email }}</td>
+    </tr>
+    <tr>
+        <td><strong>status*</strong></td>
+        <td>{{ profile.status }}</td>
+    </tr>
+    {% if profile.user_dn %}
+    <tr>
+        <td><strong>User DN</strong></td>
+        <td>{{ profile.user_dn }}</td>
+    </tr>
+    {% endif %}
+    {% if profile.phone %}
+    <tr>
+        <td><strong>Phone</strong></td>
+        <td>{{ profile.phone }}</td>
+    </tr>
+    {% endif %}
+    {% if profile.institution %}
+    <tr>
+        <td><strong>Institution</strong></td>
+        <td>{{ profile.institution }}</td>
+    </tr>
+    {% endif %}
+    {% if profile.country %}
+    <tr>
+        <td><strong>Country</strong></td>
+        <td>{{ profile.country }}</td>
+    </tr>
+    {% endif %}
+    {% if profile.research_area %}
+    <tr>
+        <td><strong>Research Area</strong></td>
+        <td>{{ profile.research_area }}</td>
+    </tr>
+    {% endif %}
+    {% if profile.description %}
+    <tr>
+        <td><strong>Research description</strong></td>
+        <td>{{ profile.description }}</td>
+    </tr>
+    {% endif %}
+    {% if profile.resources %}
+    <tr>
+        <td><strong>Requested Resources</strong></td>
+        <td>{{ profile.resources }}</td>
+    </tr>
+    {% endif %}
+</table>
+<div class="form-actions">
+    {% if selfie %} 
+        <a class="btn btn-primary" href="{% url 'profile-update' %}">Update</a>
+        <a class="btn btn-primary" href="{% url 'password_change' %}">Change password</a>
+    {% else %}
+        {% if user.is_staff %}
+            <a class="btn btn-primary" href="{% url 'profile-update' profile.pk %}">Modify User</a>
+            {% if profile.can_be_activated %}
+                <a class="btn btn-success" href="{% url 'activate' profile.pk %}">Activate</a>
+            {% endif %}
+            <a class="btn btn-danger" href="{% url 'profile-del' profile.pk %}">Delete</a>
+        {% endif %}        
+    {% endif %}
+</div>
+
+
+
+{% endblock %}

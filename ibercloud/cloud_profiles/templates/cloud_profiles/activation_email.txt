@@ -1,0 +1,12 @@
+Dear {{ profile.name }},
+
+Your account for the Ibergrid Cloud Infrastructure is now active.
+
+In order to access the resources, you will need to set a new password at:
+https://{{ site.domain }}{% url 'reset-password' profile.password_key %}
+
+If you need further assistance, contact us on https://{{ site.domain }}{% url 'support' %}.
+
+Regards,
+Ibergrid Cloud team.
+

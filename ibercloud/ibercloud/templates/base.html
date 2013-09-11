@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+{% load bootstrap_toolkit %}
+<html lang="en">
+<head>
+</head>
+    <title>ibercloud {{ extra_title }}</title>
+    <meta name="description" content="">
+    {% bootstrap_stylesheet_tag %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}/css/ibercloud.css" />
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page-header">
+        <ul class="nav nav-pills pull-right">
+            <li><a href="{% url 'profile' %}">Your account</a></li>
+            {% if user.is_staff %}
+                <li><a href="{% url 'profiles' %}">Manage users</a></li>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}">Logout</a><li>
+            {% endif %}
+            <li><a href="{% url 'support' %}">Support</a></li>
+
+        </ul>
+        <a class="brand" href="{% url 'home' %}">IberCloud</a>
+    </div>
+    
+    {% bootstrap_messages %}
+
+    {% block content %}{% endblock %}
+</div> <!-- /container -->
+
+</body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+{% bootstrap_javascript_tag %}
+</html>

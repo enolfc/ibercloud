@@ -1,0 +1,37 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+
+{% if profiles %}
+<table class="table table-striped"> 
+    <thead>
+        <tr>
+            <th>User Name</th>
+            <th>e-mail</th>
+            <th>status*</th>
+            <th>actions</th>
+        </tr>
+    </thead>
+    {% for p in profiles %}
+    <tr>
+        <td>{{ p.name }}</td>
+        <td>{{ p.email }}</td>
+        <td>{{ p.status }}</td>
+        <td>
+            <div class="btn-group">
+                <a class="btn btn-small btn-info" href="{% url 'profile' p.pk %}">Details</a>
+                <a class="btn btn-small btn-primary" href="{% url 'profile-update' p.pk %}">Edit</a>
+                {% if p.can_be_activated %}
+                    <a class="btn btn-small btn-success" href="{% url 'activate' p.pk %}">Activate</a>
+                {% endif %}
+                <a class="btn btn-small btn-danger" href="{% url 'profile-del' p.pk %}">Delete</a>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}

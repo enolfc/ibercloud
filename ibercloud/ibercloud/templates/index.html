@@ -1,0 +1,47 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+
+    <div class="hero-unit">
+        <h1>IberCloud</h1>
+        <p>A Scientific Cloud infrastructure for IberGrid researchers</p>
+    </div>
+
+    <!-- Example row of columns -->
+    <div class="row">
+        <div class="span6">
+          <h2>IberGrid &amp; IberCloud</h2>
+
+          <p><a href="http://ibergrid.lip.pt/">IberGrid</a> is an collaborative agreement
+          established between <a href="http://www.gridcomputing.pt/">Portuguese NGI (PT-NGI)</a> and
+          <a href="http://www.es-ngi.es/">Spanish NGI (ES-NGI)</a> for setting a common umbrella
+          for the distributed service deployment and effort sharing on national and global EGI tasks.
+
+          <p>IberCloud is the IberGrid initiative to provide access to resources via cloud mode.</p>
+
+          <p>If you are interested in getting access <a href="{% url 'registration' %}">request
+             an account</a> by filling a form with your computing needs</p>
+
+        </div>
+        <div class="span6">
+            <h2>Use it!</h2>
+            <p>The IberCloud sites use a common <a href="http://ibergrid.lip.pt/CLOUD/infrastructure/LDAP">LDAP authentication</a> server for providing single sign-on to the resources.
+            Check the <a href="http://ibergrid.lip.pt/CLOUD/infrastructure/capabilities">complete list of resources and access APIs</a> at the <a href="http://ibergrid.lip.pt">Ibergrid wiki</a>. We are working on extending our infrastructure to more sites</p>
+
+            <p>You can use the OpenStack based resources directly from our portal, clicking the button below</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span6">
+            <p class="pull-right"><a class="btn btn-large btn-primary" href="{% url 'registration' %}">Request an account &raquo;</a></p>
+        </div>
+        <div class="span6">
+            <p class="pull-right"><a class="btn btn-large btn-primary" href="/horizon">Start using it &raquo;</a></p>
+        </div>
+    </div>
+
+
+
+{% endblock %}

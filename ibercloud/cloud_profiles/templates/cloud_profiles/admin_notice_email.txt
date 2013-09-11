@@ -1,0 +1,12 @@
+Dear IberCloud administrators, 
+
+A new user {{ profile.name }} ({{profile.email}}) has requested access to the infrastructure.
+
+In order to activate this user, please check the profile at:
+http://{{ site.domain }}{% url 'profile' profile.pk %}
+
+If you need further assistance, contact us on http://{{ site.domain }}{% url 'support' %}.
+
+Regards,
+Ibergrid Cloud team.
+
