@@ -85,7 +85,7 @@ class Profile(models.Model):
     def get_uid(self):
         if self.country == 'ES':
             base = 1000000
-        elif self.country == 'PS':
+        elif self.country == 'PT':
             base = 2000000
         else:
             base = 9000000

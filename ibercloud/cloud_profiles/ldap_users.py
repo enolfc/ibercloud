@@ -20,6 +20,18 @@ def get_ldap_conn(server=None, bind_dn=None, passwd=None):
     return conn
 
 
+def get_users():
+    conn = get_ldap_conn()
+    base = getattr(settings, 'CLOUD_PROFILES_LDAP_BASE_DN',
+                   'o=cloud,dc=ibergrid,dc=eu')
+    account_filter = getattr(settings, 'CLOUD_PROFILES_LDAP_OBJ_CLASS',
+                             '(objectClass=account)')
+    user_list = conn.search_s(base, ldap.SCOPE_SUBTREE, account_filter, 
+                              ['cn','uid'])    
+    return [{'email': u[1]['uid'][0],
+             'name': u[1]['cn'][0]} for u in user_list]
+
+
 def check_user_password(dn, passwd):
     try:
         get_ldap_conn(bind_dn=dn, passwd=str(passwd))

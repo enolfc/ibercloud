@@ -6,7 +6,7 @@ from cloud_profiles.views import (UserLogin, UserLogout, ProfileView,
                                   SelfProfileModify, ProfileModify,
                                   ProfileList, ProfileDel, RegisterProfile,
                                   ProfileConfirm, ProfileActivate,
-                                  ResetPassword)
+                                  ResetPassword, UserList)
 
 # password change
 from django.contrib.auth.views import password_change
@@ -56,4 +56,6 @@ urlpatterns = patterns('',
     # reset profile password
     url(r'^reset-password/(?P<password_key>[-_\w]+)$',
         ResetPassword.as_view(), name='reset-password'),
+    # list ldap users 
+    url(r'^user-list$', UserList.as_view(), name='user-list'),
 )

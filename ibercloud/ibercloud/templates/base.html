@@ -19,6 +19,7 @@
             <li><a href="{% url 'profile' %}">Your account</a></li>
             {% if user.is_staff %}
                 <li><a href="{% url 'profiles' %}">Manage users</a></li>
+                <li><a href="{% url 'user-list' %}">User List</a></li>
             {% endif %}
             {% if user.is_authenticated %}
                 <li><a href="{% url 'logout' %}">Logout</a><li>

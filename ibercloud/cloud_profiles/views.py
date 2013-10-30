@@ -11,7 +11,7 @@ from django.template import loader
 
 # authentication
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 
@@ -24,6 +24,17 @@ from django.views.generic.edit import FormView, UpdateView, DeleteView
 from cloud_profiles.models import Profile
 from cloud_profiles.forms import (RegisterCertForm, ProfileUpdateForm,
                                   RegisterForm, PasswordResetForm)
+
+from cloud_profiles.ldap_users import get_users as get_ldap_users
+
+def is_site_admin(user):
+    return 'site_admins' in [g.name for g in user.groups.all()]
+
+
+class SiteAdminView(object):
+    @method_decorator(user_passes_test(is_site_admin))
+    def dispatch(self, request, *args, **kwargs):
+        return super(SiteAdminView, self).dispatch(request, *args, **kwargs)
 
 
 # Mixin for staff required views
@@ -103,6 +114,22 @@ class SelfProfileModify(BaseProfileModify):
 class ProfileList(StaffView, ListView):
     model = Profile
     context_object_name = 'profiles'
+
+
+class UserList(SiteAdminView, TemplateView):
+    template_name = 'cloud_profiles/user_list.html'
+
+    def get_context_data(self, **kwargs):
+        users = get_ldap_users()
+        for u in users:
+            try: 
+                profile = Profile.objects.get(email=u['email'])
+                u['status'] = profile.status
+            except Profile.DoesNotExist:
+                u['status'] = 'EX'
+        ctx = super(UserList, self).get_context_data(**kwargs)
+        ctx['users'] = users
+        return ctx
 
 
 class ProfileDel(StaffView, DeleteView):
