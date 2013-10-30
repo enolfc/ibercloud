@@ -1,0 +1,30 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+
+{% if users %}
+<h2>Current users</h2>
+
+<table class="table table-striped"> 
+    <thead>
+        <tr>
+            <th>e-mail (user name)</th>
+            <th>name</th>
+            <th>status*</th>
+        </tr>
+    </thead>
+    {% for u in users %}
+    <tr>
+        <td>{{ u.email }}</td>
+        <td>{{ u.name }}</td>
+        <td>{{ u.status }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<h2>No users!?</h2>
+{% endif %}
+
+{% endblock %}
