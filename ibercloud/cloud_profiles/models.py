@@ -1,8 +1,10 @@
+
+import hashlib
+import random
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.contrib.auth import get_user_model
-from uuid import uuid1
 
 import ldap_users
 
@@ -13,6 +15,12 @@ COUNTRIES = (
 
 
 class ProfileManager(models.Manager):
+    def create(self, *args, **kwargs):
+        p = super(ProfileManager, self).create(*args, **kwargs)
+        p.create_user_keys()
+        p.save()
+        return p
+
     def new_profile(self, *args, **kwargs):
         p = self.create(*args, **kwargs)
         model = get_user_model()
@@ -26,10 +34,14 @@ class ProfileManager(models.Manager):
         return p
 
     def profile_from_user(self, user):
-        p = self.create(email=user.email,
-                        name=user.username,
-                        user=user)
-        p.status = p.EXTERNAL
+        try: 
+            p = self.get(email=user.email)
+            p.user = user
+        except Profile.DoesNotExist:
+            p = self.create(email=user.email,
+                            name=user.username,
+                            user=user)
+            p.status = p.EXTERNAL
         p.save()
         return p
 
@@ -68,19 +80,34 @@ class Profile(models.Model):
                                            "resources needed",
                                  blank=True)
     # the validation request code, (generated when the user is created)
-    confirmation_key = models.CharField(max_length=100, default=uuid1())
-    password_key = models.CharField(max_length=100, default=uuid1())
+    confirmation_key = models.CharField(max_length=100)
+    password_key = models.CharField(max_length=100)
     # status of the profile
     status = models.CharField(max_length=2, choices=STATUS, default=CREATED)
     # the django user
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 null=True, blank=True)
 
+    class Meta:
+        permissions = (
+            ('list_users', 'Can list ldap users'),
+        )
+
+
     def __unicode__(self):
         return self.email
 
     def get_dn(self):
-        return 'uid=%s,ou=users,c=es,o=cloud,dc=ibergrid,dc=eu' % str(self.email)
+        if self.country == 'PT':
+            return 'uid=%s,ou=users,c=pt,o=cloud,dc=ibergrid,dc=eu' % str(self.email)
+        else:
+            return 'uid=%s,ou=users,c=pt,o=cloud,dc=ibergrid,dc=eu' % str(self.email)
+
+    def create_user_keys(self):
+        salt1 = hashlib.sha1(str(random.random())).hexdigest()[:6]
+        salt2 = hashlib.sha1(str(random.random())).hexdigest()[:6]
+        self.confirmation_key = hashlib.sha1(salt1+self.email).hexdigest()
+        self.password_key = hashlib.sha1(salt2+self.email).hexdigest()
 
     def get_uid(self):
         if self.country == 'ES':
