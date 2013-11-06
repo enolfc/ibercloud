@@ -16,7 +16,7 @@ class X509Backend(object):
         if user_dn:
             try:
                 profile = Profile.objects.get(user_dn=user_dn)
-                if profile.user.is_active:
+                if profile.user and profile.user.is_active:
                     return profile.user
             except (Profile.DoesNotExist, Profile.MultipleObjectsReturned):
                 pass 
