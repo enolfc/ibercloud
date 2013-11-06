@@ -21,7 +21,9 @@ def get_ldap_conn(server=None, bind_dn=None, passwd=None):
 
 
 def get_users():
-    conn = get_ldap_conn()
+    # This requires the general auth bind dn
+    conn = get_ldap_conn(bind_dn=settings.AUTH_LDAP_BIND_DN,
+                         passwd=settings.AUTH_LDAP_BIND_PASSWORD)
     base = getattr(settings, 'CLOUD_PROFILES_LDAP_BASE_DN',
                    'o=cloud,dc=ibergrid,dc=eu')
     account_filter = getattr(settings, 'CLOUD_PROFILES_LDAP_OBJ_CLASS',
