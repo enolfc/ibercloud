@@ -11,7 +11,7 @@ from django.template import loader
 
 # authentication
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 
@@ -27,12 +27,10 @@ from cloud_profiles.forms import (RegisterCertForm, ProfileUpdateForm,
 
 from cloud_profiles.ldap_users import get_users as get_ldap_users
 
-def is_site_admin(user):
-    return 'site_admins' in [g.name for g in user.groups.all()]
 
-
+# Mixin for site admin views
 class SiteAdminView(object):
-    @method_decorator(user_passes_test(is_site_admin))
+    @method_decorator(permission_required('cloud_profiles.list_users'))
     def dispatch(self, request, *args, **kwargs):
         return super(SiteAdminView, self).dispatch(request, *args, **kwargs)
 
