@@ -19,6 +19,8 @@
             <li><a href="{% url 'profile' %}">Your account</a></li>
             {% if user.is_staff %}
                 <li><a href="{% url 'profiles' %}">Manage users</a></li>
+            {% endif %}
+            {% if perms.cloud_profiles.list_users %}
                 <li><a href="{% url 'user-list' %}">User List</a></li>
             {% endif %}
             {% if user.is_authenticated %}
